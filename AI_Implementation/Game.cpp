@@ -190,6 +190,8 @@ void Game::handleEvents() {
 		player.pos.y += MOVE_RATE;
 	}
 
+	if (keys[SDL_SCANCODE_SPACE]) player.pos = Vector3(400, 400, 0);
+
 	if (keys[SDL_SCANCODE_P] && currentTime - lastTime > 1000) {
 		SDL_SetRenderDrawColor(m_pRenderer, 100, 100, 255, 255);
 		lastTime = currentTime;
@@ -225,13 +227,11 @@ void Game::setStartDir(char *p_str) {
 void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 	if (pf->m_foundGoal == true) {
 		Vector3 nextPos = pf->NextPathPos(ai_Object);
-		targetPos = player.pos;
-		Vector3 targetPosPrev = targetPos;
 
 		system("cls");
 		cout << "ai object: " << ai_Object.pos.x << " , " << ai_Object.pos.y << endl;
 		cout << "next pos: " << nextPos.x << " , " << nextPos.y << endl;
-		cout << "target pos: " << targetPos.x << " , " << targetPos.y << endl << endl;
+		cout << "target pos: " << player.pos.x << " , " << player.pos.y << endl << endl;
 
 		if (nextPos.x > ai_Object.pos.x) {
 			ai_Object.pos.x += MOVE_RATE;
@@ -246,16 +246,14 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 			ai_Object.pos.y -= MOVE_RATE;
 		}
 
-		//targetPos = player.pos;
-		Vector3 distToTarget = targetPos - Vector3(ai_Object.pos.x, ai_Object.pos.y, 0);
+		Vector3 distToTarget = player.pos - Vector3(ai_Object.pos.x, ai_Object.pos.y, 0);
 
-		if (floor(distToTarget.magnitude()) < 30) {
+		if (floor(distToTarget.magnitude()) < 32) {
 			pf->m_initalizedStartGoal = false;
 			pf->m_foundGoal = false;
 			pf->ClearOpenList();
 			pf->ClearPathToGoal();
 			pf->ClearVisitedList();
-			TestSomeShit(ai_Object, player.pos);
 		}
 	}
 	else {
