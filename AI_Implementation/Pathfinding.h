@@ -27,15 +27,15 @@ public:
 		return false;
 	}
 
-	void Draw(string id, Vector3 pos, float width, float height, float rotate, SDL_Renderer *pRenderer, SDL_RendererFlip flip) {
+	void Draw(string id, int x, int y, float width, float height, float rotate, SDL_Renderer *pRenderer, SDL_RendererFlip flip) {
 		SDL_Rect srcRect;
 		SDL_Rect dstRect;
 		srcRect.x = 0;
 		srcRect.y = 0;
 		srcRect.w = dstRect.w = (int)width;
 		srcRect.h = dstRect.h = (int)height;
-		dstRect.x = pos.x;
-		dstRect.y = pos.y;
+		dstRect.x = x;
+		dstRect.y = y;
 		SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &dstRect, rotate, 0, flip);
 	}
 	Vector3 pos;
