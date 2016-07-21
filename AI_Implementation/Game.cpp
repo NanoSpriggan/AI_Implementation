@@ -1,4 +1,4 @@
-#if 1
+#if 0
 
 #include "Game.h"
 #include <iostream>
@@ -227,7 +227,6 @@ void Game::setStartDir(char *p_str) {
 void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 	if (pf->m_foundGoal == true) {
 		Vector3 nextPos = pf->NextPathPos(ai_Object);
-
 		system("cls");
 		cout << "ai object: " << ai_Object.pos.x << " , " << ai_Object.pos.y << endl;
 		cout << "next pos: " << nextPos.x << " , " << nextPos.y << endl;
@@ -246,7 +245,7 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 			ai_Object.pos.y -= MOVE_RATE;
 		}
 
-		Vector3 distToTarget = player.pos - Vector3(ai_Object.pos.x, ai_Object.pos.y, 0);
+		Vector3 distToTarget = targetPos - Vector3(ai_Object.pos.x, ai_Object.pos.y, 0);
 
 		if (floor(distToTarget.magnitude()) < 32) {
 			pf->m_initalizedStartGoal = false;
@@ -254,6 +253,7 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 			pf->ClearOpenList();
 			pf->ClearPathToGoal();
 			pf->ClearVisitedList();
+			//targetPos = player.pos;
 		}
 	}
 	else {
@@ -263,7 +263,7 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 }
 
 #endif
-#if 0
+#if 1
 
 #include "Game.h"
 #include <iostream>
@@ -446,9 +446,9 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 		Vector3 nextPos = pf->NextPathPos(ai_Object);
 
 		// TEXT ON SCREEN STUFF
-		string str_nextPos = "nextPos: " + to_string(nextPos.x) + " , " + to_string(nextPos.y);
+		/*string str_nextPos = "nextPos: " + to_string(nextPos.x) + " , " + to_string(nextPos.y);
 		string str_aiObject = "AI Object: " + to_string(ai_Object.pos.x) + " , " + to_string(ai_Object.pos.y);
-		string str_targetPos = "Target Pos: " + to_string(targetPos.x) + " , " + to_string(targetPos.y);
+		string str_targetPos = "Target Pos: " + to_string(targetPos.x) + " , " + to_string(targetPos.y);*/
 
 		if (nextPos.x > ai_Object.pos.x) {
 			ai_Object.pos.x += MOVE_RATE;
