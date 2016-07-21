@@ -27,9 +27,11 @@ string str_nextPos;
 string str_aiObject;
 string str_targetPos;
 
-#define MOVE_RATE 3.0f;
+#define MOVE_RATE 1.0f;
 
 void TestSomeShit(AiObject &ai, Vector3 targetPos);
+
+enum CharDirStates {UP = 1 , DOWN = 2, LEFT = 3, RIGHT = 4};
 
 //$(ProjectDir)
 
@@ -69,7 +71,10 @@ bool Game::Init(const char * title, int xpos, int ypos, int width, int height, i
 		wall.w = 10;
 		wall.h = 800;
 
-		player.Load("sprite2.png", "SPRITE", m_pRenderer);
+		player.Load("spriteUp.png", UP, m_pRenderer);
+		player.Load("spriteDown.png", DOWN, m_pRenderer);
+		player.Load("spriteLeft.png", LEFT, m_pRenderer);
+		player.Load("spriteRight.png", RIGHT, m_pRenderer);
 
 		terra.Load("tile.png", "NORMAL", m_pRenderer);
 		terra.Load("water.png", "WATER", m_pRenderer);
@@ -116,7 +121,7 @@ bool Game::Init(const char * title, int xpos, int ypos, int width, int height, i
 }
 
 void Game::Update() {
-	m_currentFrame = int(((SDL_GetTicks() / 100) % 12));
+	m_currentFrame = int(((SDL_GetTicks() / 100) % 6));
 	if (!isPaused) {
 		// DO STUFF HERE
 
@@ -125,7 +130,7 @@ void Game::Update() {
 		}*/
 		
 		TestSomeShit(_ai1, player.pos);
-		TestSomeShit(_ai1, player.pos);
+		//TestSomeShit(_ai2, player.pos);
 
 		SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
 	}
@@ -136,18 +141,11 @@ void Game::Render() {
 
 	// DRAW TO SCREEN HERE
 
-	//for (vector<Terrain*>::size_type i = 0; i != terrainList.size(); i++) {
-	//	terra.Draw("NORMAL", 1, 1, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	//	terra.Draw("WATER", 41, 1, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	//	terra.Draw("LAVA", 81, 1, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	//	terra.Draw("WALL", 121, 1, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	//}
-
 	/*for (vector<Terrain*>::size_type i = 0; i != terrainList.size(); i++) {
 		terra.Draw(terraType, pos, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
 	}*/
 
-	player.Draw("SPRITE", player.pos, 32, 32, m_currentFrame, 0, m_pRenderer, SDL_FLIP_NONE);
+	player.Draw(DOWN, player.pos, 32, 32, m_currentFrame, 0, m_pRenderer, SDL_FLIP_NONE);
 
 	terra.Draw("NORMAL", 0, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
 	terra.Draw("WATER", 20, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
@@ -157,8 +155,8 @@ void Game::Render() {
 	/*for (vector<AiObject*>::size_type i = 0; i != aiList.size(); i++)
 		aiList[i]->Draw("RED", _ai1.pos, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);*/
 
-	_ai1.Draw("RED", _ai1.pos, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	_ai2.Draw("GREEN", _ai2.pos, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
+	_ai1.Draw("RED", _ai1.pos, 20, 20, 0, m_pRenderer, SDL_FLIP_NONE);
+	_ai2.Draw("GREEN", _ai2.pos, 20, 20, 0, m_pRenderer, SDL_FLIP_NONE);
 
 	SDL_RenderPresent(m_pRenderer);
 }
@@ -230,6 +228,7 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 		targetPos = player.pos;
 		Vector3 targetPosPrev = targetPos;
 
+		system("cls");
 		cout << "ai object: " << ai_Object.pos.x << " , " << ai_Object.pos.y << endl;
 		cout << "next pos: " << nextPos.x << " , " << nextPos.y << endl;
 		cout << "target pos: " << targetPos.x << " , " << targetPos.y << endl << endl;
@@ -256,12 +255,12 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 			pf->ClearOpenList();
 			pf->ClearPathToGoal();
 			pf->ClearVisitedList();
-			TestSomeShit(ai_Object, targetPos);
+			TestSomeShit(ai_Object, player.pos);
 		}
 	}
 	else {
 		cout << "FIND PATH" << endl;
-		pf->FindPath(ai_Object.pos, targetPos);
+		pf->FindPath(ai_Object.pos, player.pos);
 	}
 }
 

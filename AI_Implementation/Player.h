@@ -24,7 +24,7 @@ public:
 		ai_Health = 100;
 	}
 
-	bool Load(string fileName, string id, SDL_Renderer *pRenderer) {
+	bool Load(string fileName, int id, SDL_Renderer *pRenderer) {
 		SDL_Surface *pTempSurface = IMG_Load(fileName.c_str());
 		if (pTempSurface == 0) return false;
 		SDL_Texture *pTexture = SDL_CreateTextureFromSurface(pRenderer, pTempSurface);
@@ -34,7 +34,7 @@ public:
 		return false;
 	}
 
-	void Draw(string id, Vector3 pos, float width, float height, int currentFrame, float rotate, SDL_Renderer *pRenderer, SDL_RendererFlip flip) {
+	void Draw(int id, Vector3 pos, float width, float height, int currentFrame, float rotate, SDL_Renderer *pRenderer, SDL_RendererFlip flip) {
 		SDL_Rect srcRect;
 		SDL_Rect dstRect;
 		srcRect.x = width * currentFrame;
@@ -52,7 +52,7 @@ public:
 
 	float radius() { return DOT_HEIGHT + 1; }
 
-	map<string, SDL_Texture*> m_textureMap;
+	map<int, SDL_Texture*> m_textureMap;
 
 	Vector3 pos;
 private:

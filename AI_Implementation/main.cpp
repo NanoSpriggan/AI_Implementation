@@ -31,7 +31,5 @@ int main(int argc, char* argv[]) {
 		g_game->Render();
 	}
 	g_game->Clean();
-
-	system("pause");
 	return 0;
 }
