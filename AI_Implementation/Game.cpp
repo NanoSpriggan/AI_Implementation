@@ -1,4 +1,4 @@
-#if 0
+#if 1
 
 #include "Game.h"
 #include <iostream>
@@ -23,6 +23,8 @@ PathFinding *pf = new PathFinding();
 Terrain terra;
 vector<Terrain *> terrainList;
 
+Vector3 lastKnownPos;
+Vector3 targetPosition = Vector3(50, 50, 0);
 string str_nextPos;
 string str_aiObject;
 string str_targetPos;
@@ -32,6 +34,7 @@ string str_targetPos;
 void TestSomeShit(AiObject &ai, Vector3 targetPos);
 
 enum CharDirStates {UP = 1 , DOWN = 2, LEFT = 3, RIGHT = 4};
+int playerDir = DOWN;
 
 //$(ProjectDir)
 
@@ -124,13 +127,12 @@ void Game::Update() {
 	m_currentFrame = int(((SDL_GetTicks() / 100) % 6));
 	if (!isPaused) {
 		// DO STUFF HERE
-
 		/*for (vector<AiObject*>::size_type i = 0; i != aiList.size(); ++i) {
 			TestSomeShit(aiList[i], player.pos);
 		}*/
 		
-		TestSomeShit(_ai1, player.pos);
-		//TestSomeShit(_ai2, player.pos);
+		TestSomeShit(_ai1, targetPosition);
+		TestSomeShit(_ai2, targetPosition);
 
 		SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
 	}
@@ -145,7 +147,7 @@ void Game::Render() {
 		terra.Draw(terraType, pos, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
 	}*/
 
-	player.Draw(DOWN, player.pos, 32, 32, m_currentFrame, 0, m_pRenderer, SDL_FLIP_NONE);
+	player.Draw(playerDir, player.pos, 32, 32, m_currentFrame, 0, m_pRenderer, SDL_FLIP_NONE);
 
 	terra.Draw("NORMAL", 0, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
 	terra.Draw("WATER", 20, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
@@ -177,16 +179,26 @@ void Game::handleEvents() {
 		}
 	}
 
+	playerDir = DOWN;
+
 	if (keys[SDL_SCANCODE_A]) {
+		//lastKnownPos = player.pos;
+		playerDir = LEFT;
 		player.pos.x -= MOVE_RATE;
 	}
 	if (keys[SDL_SCANCODE_D]) {
+		//lastKnownPos = player.pos;
+		playerDir = RIGHT;
 		player.pos.x += MOVE_RATE;
 	}
 	if (keys[SDL_SCANCODE_W]) {
+		//lastKnownPos = player.pos;
+		playerDir = UP;
 		player.pos.y -= MOVE_RATE;
 	}
 	if (keys[SDL_SCANCODE_S]) {
+		//lastKnownPos = player.pos;
+		playerDir = DOWN;
 		player.pos.y += MOVE_RATE;
 	}
 
@@ -227,10 +239,12 @@ void Game::setStartDir(char *p_str) {
 void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 	if (pf->m_foundGoal == true) {
 		Vector3 nextPos = pf->NextPathPos(ai_Object);
-		system("cls");
+		/*system("cls");
+
 		cout << "ai object: " << ai_Object.pos.x << " , " << ai_Object.pos.y << endl;
 		cout << "next pos: " << nextPos.x << " , " << nextPos.y << endl;
-		cout << "target pos: " << player.pos.x << " , " << player.pos.y << endl << endl;
+		cout << "target pos: " << targetPos.x << " , " << targetPos.y << endl;
+		cout << "last known pos: " << lastKnownPos.x << " , " << lastKnownPos.y << endl;*/
 
 		if (nextPos.x > ai_Object.pos.x) {
 			ai_Object.pos.x += MOVE_RATE;
@@ -245,25 +259,37 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 			ai_Object.pos.y -= MOVE_RATE;
 		}
 
-		Vector3 distToTarget = targetPos - Vector3(ai_Object.pos.x, ai_Object.pos.y, 0);
+		Vector3 distToTarget = targetPos - Vector3(ai_Object.pos.x, ai_Object.pos.y, 0); 
+		Vector3 distBetweenTarget = lastKnownPos - Vector3(player.pos.x, player.pos.y, 0);
 
-		if (floor(distToTarget.magnitude()) < 32) {
+		if (distBetweenTarget.magnitude() < 0.5f) {
 			pf->m_initalizedStartGoal = false;
 			pf->m_foundGoal = false;
 			pf->ClearOpenList();
 			pf->ClearPathToGoal();
 			pf->ClearVisitedList();
-			//targetPos = player.pos;
+			targetPosition = player.pos;
+		}
+
+		if (floor(distToTarget.magnitude()) < 32) {
+			//cout << "trigger" << endl;
+			lastKnownPos = player.pos;
+			pf->m_initalizedStartGoal = false;
+			pf->m_foundGoal = false;
+			pf->ClearOpenList();
+			pf->ClearPathToGoal();
+			pf->ClearVisitedList();
+			targetPosition = player.pos;
 		}
 	}
 	else {
-		cout << "FIND PATH" << endl;
-		pf->FindPath(ai_Object.pos, player.pos);
+		pf->FindPath(ai_Object.pos, targetPos);
+		//cout << "FIND PATH" << endl;
 	}
 }
 
 #endif
-#if 1
+#if 0
 
 #include "Game.h"
 #include <iostream>

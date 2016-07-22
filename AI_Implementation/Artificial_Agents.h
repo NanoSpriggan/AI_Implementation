@@ -8,10 +8,10 @@
 #include <chrono>
 #include <SDL.h>
 #include <map>
+#include "AI_Object.h"
 
 typedef uint32_t Uint32;
-
-
+typedef StateMachine<AiAgent> FlyingSpaghettiMonster;
 
 //class Agent {
 //public:
@@ -35,7 +35,7 @@ typedef uint32_t Uint32;
 //
 //class Seek : public IBehaviour {
 //public:
-//	/*Uint32 previousTime = SDL_GetTicks();
+//	Uint32 previousTime = SDL_GetTicks();
 //	Uint32 currentTime = SDL_GetTicks();
 //	Uint32 deltaTime = currentTime - previousTime;
 //
@@ -44,7 +44,7 @@ typedef uint32_t Uint32;
 //		Vector3 dest;
 //		float P1, P2;
 //		float p12res = P2 - P1;
-//		dest.normalise();*/
+//		dest.normalise();
 //};
 //
 //class Flee : public IBehaviour {
@@ -79,33 +79,6 @@ typedef uint32_t Uint32;
 //	virtual void Update(Agent *pAgent);
 //};
 //#pragma endregion
-
-struct Vector2D {
-	double x;
-	double y;
-	Vector2D() :x(0.0), y(0.0) {}
-	Vector2D(double a, double b) :x(a), y(b){}
-	inline void Zero();
-	inline bool isZero()const;
-	inline double Length()const;
-	inline double LengthSq()const;
-	inline void Normalize();
-	inline double Dot(const Vector2D& v2)const;
-	inline int Sign(const Vector2D& v2)const;
-	inline Vector2D Perp()const;
-	inline void Truncate(double max);
-	inline double Distance(const Vector2D& v2)const;
-	inline double DistanceSq(const Vector2D& v2)const;
-	inline Vector2D GetReverse()const;
-
-	const Vector2D& operator+=(const Vector2D &rhs);
-	const Vector2D& operator-=(const Vector2D &rhs);
-	const Vector2D& operator*=(const Vector2D &rhs);
-	const Vector2D& operator/=(const Vector2D &rhs);
-	bool operator==(const Vector2D& rhs)const;
-	bool operator!=(const Vector2D& rhs)const;
-};
-
 
 template <class entity_type>
 class StateMachine {
@@ -143,6 +116,7 @@ public:
 	bool isInState(const State<entity_type>& st) const;
 };
 
+
 template <class entity_type>
 class State {
 public:
@@ -151,6 +125,23 @@ public:
 	virtual void Execute(entity_type*) = 0;
 	virtual void Exit(entity_type*) = 0;
 };
+
+template <class entity_type>
+class Seek : public State {
+	void Enter(AiObject agent, Vector3 target) {
+		Vector3 temp;
+		temp = Vector3(target.x - agent.pos.x, target.y - agent.pos.y, 0);
+		Vector3 velocity = temp;
+		velocity.normalise();
+		velocity = velocity * 10;
+		Vector3 force = velocity - 10;
+	}
+
+	void Update() {
+		ve
+	}
+};
+
 
 class BaseGameEntity {
 private:
@@ -163,6 +154,7 @@ public:
 	virtual void Update() = 0;
 	int ID()const { return m_ID; }
 };
+
 
 class EntityManager {
 private:
@@ -180,6 +172,7 @@ public:
 };
 
 #define EntityMgr EntityManager::Instance()
+
 
 class AiAgent : public BaseGameEntity {
 private:

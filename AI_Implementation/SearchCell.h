@@ -3,7 +3,7 @@
 
 #include <math.h>
 #define WORLD_SIZE 64
-#define CELL_SIZE 20.0f
+#define CELL_SIZE 10.0f
 
 struct SearchCell {
 public:
