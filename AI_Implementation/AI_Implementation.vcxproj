@@ -164,6 +164,7 @@
     <ClInclude Include="Artificial_Agents.h" />
     <ClInclude Include="fsa.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="IBehaviour.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SearchCell.h" />

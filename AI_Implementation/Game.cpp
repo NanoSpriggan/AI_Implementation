@@ -79,6 +79,7 @@ bool Game::Init(const char * title, int xpos, int ypos, int width, int height, i
 		player.Load("spriteLeft.png", LEFT, m_pRenderer);
 		player.Load("spriteRight.png", RIGHT, m_pRenderer);
 
+		terra.Load("bg.png", "background", m_pRenderer);
 		terra.Load("tile.png", "NORMAL", m_pRenderer);
 		terra.Load("water.png", "WATER", m_pRenderer);
 		terra.Load("lava.png", "LAVA", m_pRenderer);
@@ -102,10 +103,12 @@ bool Game::Init(const char * title, int xpos, int ypos, int width, int height, i
 		_ai1.Load("SPRITE_RED.png", "RED", m_pRenderer);
 		_ai1.Load("SPRITE_BLUE.png", "BLUE", m_pRenderer);
 		_ai1.Load("SPRITE_GREEN.png", "GREEN", m_pRenderer);
+		_ai1.Load("BURD.png", "burd", m_pRenderer);
 
 		_ai2.Load("SPRITE_RED.png", "RED", m_pRenderer);
 		_ai2.Load("SPRITE_BLUE.png", "BLUE", m_pRenderer);
 		_ai2.Load("SPRITE_GREEN.png", "GREEN", m_pRenderer);
+		_ai2.Load("BURD.png", "burd", m_pRenderer);
 
 		pf->m_initalizedStartGoal = false;
 		pf->m_foundGoal = false;
@@ -146,19 +149,20 @@ void Game::Render() {
 	/*for (vector<Terrain*>::size_type i = 0; i != terrainList.size(); i++) {
 		terra.Draw(terraType, pos, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
 	}*/
-
+	terra.Draw("background", 0, 0, 800, 800, 0, m_pRenderer, SDL_FLIP_NONE);
 	player.Draw(playerDir, player.pos, 32, 32, m_currentFrame, 0, m_pRenderer, SDL_FLIP_NONE);
 
-	terra.Draw("NORMAL", 0, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
+
+	/*terra.Draw("NORMAL", 0, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
 	terra.Draw("WATER", 20, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
 	terra.Draw("LAVA", 40, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	terra.Draw("WALL", 60, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
+	terra.Draw("WALL", 60, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);*/
 
 	/*for (vector<AiObject*>::size_type i = 0; i != aiList.size(); i++)
 		aiList[i]->Draw("RED", _ai1.pos, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);*/
 
-	_ai1.Draw("RED", _ai1.pos, 20, 20, 0, m_pRenderer, SDL_FLIP_NONE);
-	_ai2.Draw("GREEN", _ai2.pos, 20, 20, 0, m_pRenderer, SDL_FLIP_NONE);
+	_ai1.Draw("burd", _ai1.pos, 32, 32, 0, m_pRenderer, SDL_FLIP_NONE);
+	_ai2.Draw("burd", _ai2.pos, 32, 32, 0, m_pRenderer, SDL_FLIP_NONE);
 
 	SDL_RenderPresent(m_pRenderer);
 }
@@ -247,22 +251,22 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 		cout << "last known pos: " << lastKnownPos.x << " , " << lastKnownPos.y << endl;*/
 
 		if (nextPos.x > ai_Object.pos.x) {
-			ai_Object.pos.x += MOVE_RATE;
+			ai_Object.pos.x += MOVE_RATE + .5f;
 		}
 		else if (nextPos.x < ai_Object.pos.x) {
-			ai_Object.pos.x -= MOVE_RATE;
+			ai_Object.pos.x -= MOVE_RATE + .5f;
 		}
 		if (nextPos.y > ai_Object.pos.y) {
-			ai_Object.pos.y += MOVE_RATE;
+			ai_Object.pos.y += MOVE_RATE + .5f;
 		}
 		else if (nextPos.y < ai_Object.pos.y) {
-			ai_Object.pos.y -= MOVE_RATE;
+			ai_Object.pos.y -= MOVE_RATE + .5f;
 		}
 
 		Vector3 distToTarget = targetPos - Vector3(ai_Object.pos.x, ai_Object.pos.y, 0); 
-		Vector3 distBetweenTarget = lastKnownPos - Vector3(player.pos.x, player.pos.y, 0);
+		Vector3 distBetweenTarget = targetPosition - Vector3(player.pos.x, player.pos.y, 0);
 
-		if (distBetweenTarget.magnitude() < 0.5f) {
+		if (distBetweenTarget.magnitude() > CELL_SIZE) {
 			pf->m_initalizedStartGoal = false;
 			pf->m_foundGoal = false;
 			pf->ClearOpenList();
@@ -273,13 +277,14 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 
 		if (floor(distToTarget.magnitude()) < 32) {
 			//cout << "trigger" << endl;
-			lastKnownPos = player.pos;
+		
 			pf->m_initalizedStartGoal = false;
 			pf->m_foundGoal = false;
 			pf->ClearOpenList();
 			pf->ClearPathToGoal();
 			pf->ClearVisitedList();
 			targetPosition = player.pos;
+			ai_Object.pos = Vector3((float)(rand() % 800), (float)(rand() % 800), 0);
 		}
 	}
 	else {

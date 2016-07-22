@@ -7,22 +7,19 @@
 #include <string>
 #include <map>
 #include <Vector3.h>
+#include "Agent.h"
+#include "StateMachine.h"
+#include "SeekState.h"
 
 using namespace std;
 
-class AiObject {
+class AiObject : public Agent {
 public:
-	static const int DOT_WIDTH = 20;
-	static const int DOT_HEIGHT = 20;
-	static const int DOT_VEL = 10;
-
-	AiObject() {
-		pos = { 0, 0, 0 };
-		mCollider.h = DOT_WIDTH / 2;
-		mCollider.w = DOT_HEIGHT / 2;
-		mVelX = 2.5f;
-		mVelY = 2.5f;
-		ai_Health = 100;
+	AiObject() { Vector3 pos; }
+	AiObject(Vector3 pos) {
+		Init(pos);
+		m_pStateMachine = new StateMachine();
+		m_pStateMachine->ChangeState(this, new SeekState());
 	}
 
 	bool Load(string fileName, string id, SDL_Renderer *pRenderer) {
@@ -47,32 +44,11 @@ public:
 		SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &dstRect, rotate, 0, flip);
 	}
 
-	//void Draw_Text(SDL_Renderer * m_pRenderer, char * string, int size, int x, int y) {
-	//	TTF_Font* font = TTF_OpenFont("", size);
-	//	SDL_Color color = { 255, 255, 255, 255 };
-	//	SDL_Surface *textSurface = TTF_RenderText_Solid(font, string, color);
-	//	SDL_Texture *texTex = SDL_CreateTextureFromSurface(m_pRenderer, textSurface);
-	//	SDL_FreeSurface(textSurface);
-	//	SDL_Rect textLoc; // = SDL_QueryTexture(texTex, NULL, NULL, &x, &y);
-	//	SDL_Rect textToBeLoc;
-	//	textLoc.x = 0;
-	//	textLoc.y = 0;
-	//	textToBeLoc.x = x;
-	//	textToBeLoc.y = y;
-	//	SDL_RenderCopy(m_pRenderer, texTex, &textLoc, &textToBeLoc);
-	//	//TTF_CloseFont();
-	//}
-
-	float radius() { return DOT_HEIGHT + 1; }
-
+	float radius() { return 32; }
 	map<string, SDL_Texture*> m_textureMap;
 
 	Vector3 pos;
-private:
-	//int mPosX, mPosY;
-	float mVelX, mVelY;
-	SDL_Rect mCollider;
-	int ai_Health;
+
 };
 
 #endif // !AI_OBJECT_H

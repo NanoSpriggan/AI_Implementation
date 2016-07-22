@@ -26,6 +26,10 @@ private:
 	int m_currentFrame;
 	bool isPaused;
 	string mStartDir;
+	/*static m_
+
+protected:
+	Player *m_pPlayer;*/
 };
 
 #endif // !_GAME_H_

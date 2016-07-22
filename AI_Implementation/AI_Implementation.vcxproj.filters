@@ -74,5 +74,8 @@
     <ClInclude Include="Agent.h">
       <Filter>AI STUFF</Filter>
     </ClInclude>
+    <ClInclude Include="IBehaviour.h">
+      <Filter>AI STUFF</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
