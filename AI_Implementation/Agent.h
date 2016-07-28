@@ -32,6 +32,7 @@ public:
 	inline void SetBehaviour(IBehaviour *behaviour) { m_currentBehaviour = behaviour; }
 	void Update(float deltaTime, Player *pPlayer);
 	MovementInfo m_movementInfo;
+	Vector3 pos;
 protected:
 	void Init(Vector3 pos);
 	IBehaviour *m_currentBehaviour;
