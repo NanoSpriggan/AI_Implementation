@@ -8,6 +8,7 @@
 #include <map>
 #include <Vector3.h>
 #include "Agent.h"
+#include "State.h"
 #include "StateMachine.h"
 #include "SeekState.h"
 
@@ -19,8 +20,10 @@ public:
 	AiObject(Vector3 pos) {
 		Init(pos);
 		m_pStateMachine = new StateMachine();
-		m_pStateMachine->ChangeState(this, new SeekState());
+		m_pStateMachine->ChangeState(this, new Seek());
 	}
+
+	~AiObject() { delete m_pStateMachine; }
 
 	bool Load(string fileName, string id, SDL_Renderer *pRenderer) {
 		SDL_Surface *pTempSurface = IMG_Load(fileName.c_str());

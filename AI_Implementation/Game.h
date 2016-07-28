@@ -5,6 +5,7 @@
 #include <string>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include "Player.h"
 
 using namespace std;
 
@@ -18,6 +19,9 @@ public:
 	bool isRunning();
 	void setStartDir(char *p_str);
 	string* getStartDir() { return &mStartDir; }
+	//static Game* getInstance() { return m_instance; }
+	Player getPlayer() { return m_pPlayer; }
+	void setPlayer(Player player);
 
 private:
 	bool m_bRunning;
@@ -26,10 +30,9 @@ private:
 	int m_currentFrame;
 	bool isPaused;
 	string mStartDir;
-	/*static m_
-
+	Player m_pPlayer;
 protected:
-	Player *m_pPlayer;*/
+	
 };
 
 #endif // !_GAME_H_

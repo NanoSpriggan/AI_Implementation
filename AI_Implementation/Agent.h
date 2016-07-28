@@ -2,10 +2,11 @@
 #define AGENT_H
 
 #include <Vector3.h>
-
+//#include "Player.h"
 
 class IBehaviour;
 class StateMachine;
+class Player;
 
 struct MovementInfo {
 	Vector3 m_position;
@@ -29,12 +30,14 @@ public:
 	inline IBehaviour* GetBehaviour() { return m_currentBehaviour; }
 
 	inline void SetBehaviour(IBehaviour *behaviour) { m_currentBehaviour = behaviour; }
-	void Update(float deltaTime);
+	void Update(float deltaTime, Player *pPlayer);
 	MovementInfo m_movementInfo;
 protected:
 	void Init(Vector3 pos);
 	IBehaviour *m_currentBehaviour;
 	StateMachine *m_pStateMachine;
 };
+
+
 
 #endif // !AGENT_H

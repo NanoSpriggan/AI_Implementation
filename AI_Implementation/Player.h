@@ -38,10 +38,6 @@ public:
 		SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &dstRect, rotate, 0, flip);
 	}
 
-	void Update() {
-
-	}
-
 	float radius() { return 32; }
 	map<int, SDL_Texture*> m_textureMap;
 

@@ -11,6 +11,9 @@
 #include <Windows.h>
 #include <SDL_ttf.h>
 #include "Player.h"
+//#include "SeekState.h"
+//#include "StateMachine.h"
+//#include "State.h"
 
 int m_currentFrame;
 int NUM_AI;
@@ -51,6 +54,12 @@ const int RESET_TIME = 3000;
 FILE *fDebug;
 
 #define DEBUGMSG(str) {char charStr[256]; sprintf_s(charStr, "%s\\DEBUG.txt", g_game.getStartDirectory()->c_str());fopen_s(&fDebug, charStr,"at");fprintf(fDebug,str);fclose(fDebug);}
+
+//Game* Game::m_instance = nullptr;
+
+void Game::setPlayer(Player player) {
+	m_pPlayer = player;
+}
 
 bool Game::Init(const char * title, int xpos, int ypos, int width, int height, int flags, bool fullscreen) {
 	char cCurrentPath[FILENAME_MAX];
@@ -117,6 +126,8 @@ bool Game::Init(const char * title, int xpos, int ypos, int width, int height, i
 			aiList[i]->pos = Vector3((float)(rand() % 800), (float)(rand() % 800), 0);
 
 		player.pos = Vector3(400, 400, 0);
+		
+		//g_game->setPlayer(player);
 
 		// don't delete this line again dickhead
 		m_bRunning = true;

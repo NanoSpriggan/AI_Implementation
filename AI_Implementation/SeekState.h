@@ -2,15 +2,21 @@
 #define SEEKSTATE_H
 #include "State.h"
 #include "Player.h"
+#include "Game.h"
 
-class SeekState : public State {
-public:
-	SeekState() {}
-	~SeekState() {}
+//Game *g_game;
 
-	void Init(Agent* pAgent) {}
-	void Update(float deltaTime, Agent* pAgent, StateMachine* pSM);
-	void Exit(Agent *pAgent) {}
-};
+//class SeekState : public State {
+//public:
+//	SeekState() {}
+//	~SeekState() {}
+//
+//	void Init(Agent* pAgent) {}
+//	void Update(float deltaTime, Agent* pAgent, StateMachine* pSM) {
+//		Player* player = game->getPlayer();
+//		Vector3 diff = player->GetPos() - pAgent->GetPos();
+//	}
+//	void Exit(Agent *pAgent) {}
+//};
 
 #endif // !SEEKSTATE_H

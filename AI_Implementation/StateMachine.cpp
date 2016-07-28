@@ -10,10 +10,10 @@ StateMachine::~StateMachine() {
 	delete m_pCurrentState;
 }
 
-void StateMachine::Update(float deltaTime, Agent* pAgent) {
+void StateMachine::Update(float deltaTime, Agent* pAgent, Player *pPlayer) {
 	if (m_pCurrentState == nullptr)
 		return;
-	m_pCurrentState->Update(deltaTime, pAgent, this);
+	m_pCurrentState->Update(deltaTime, pAgent, *pPlayer, this);
 }
 
 void StateMachine::ChangeState(Agent* pAgent, State* pNewState) {

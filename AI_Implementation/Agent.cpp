@@ -10,9 +10,9 @@ Agent::Agent(Vector3 pos) { Init(pos); }
 
 Agent::~Agent(){}
 
-void Agent::Update(float deltaTime) {
+void Agent::Update(float deltaTime, Player *pPlayer) {
 	if (m_pStateMachine != nullptr)
-		m_pStateMachine->Update(deltaTime, this);
+		m_pStateMachine->Update(deltaTime, this, pPlayer);
 	if (m_currentBehaviour != nullptr)
 		m_currentBehaviour->Update(deltaTime, m_movementInfo);
 	m_movementInfo.m_velocity += m_movementInfo.m_acceleration * deltaTime;
@@ -20,7 +20,7 @@ void Agent::Update(float deltaTime) {
 		m_movementInfo.m_velocity.normalise();
 		m_movementInfo.m_velocity = m_movementInfo.m_velocity * m_movementInfo.m_maxSpeed;
 	}
-	m_movementInfo.m_rotation = atan2(m_movementInfo.m_velocity.y, m_movementInfo.m_velocity.x) + M_PI / 2;
+	m_movementInfo.m_rotation = atan2(m_movementInfo.m_velocity.y, m_movementInfo.m_velocity.x) + (float)(M_PI / 2);
 	m_movementInfo.m_acceleration = Vector3(0.0f, 0.0f, 0.0f);
 	m_movementInfo.m_position += m_movementInfo.m_velocity * deltaTime;
 }

@@ -1,9 +1,9 @@
-//#include "SeekState.h"
-//#include "StateMachine.h"
-//
-//class AIObject;
-//class Player;
-//
+#include "SeekState.h"
+#include "StateMachine.h"
+
+class AIObject;
+class Player;
+
 //void SeekState::Update(float deltaTime, Agent *pAgent, StateMachine* pSM) {
 //	Vector3 diff = pPlayer.pos - pAgent.pos;
 //	if (diff.magnitude < 50) {
