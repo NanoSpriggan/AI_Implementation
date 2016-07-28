@@ -55,8 +55,6 @@ FILE *fDebug;
 
 #define DEBUGMSG(str) {char charStr[256]; sprintf_s(charStr, "%s\\DEBUG.txt", g_game.getStartDirectory()->c_str());fopen_s(&fDebug, charStr,"at");fprintf(fDebug,str);fclose(fDebug);}
 
-//Game* Game::m_instance = nullptr;
-
 void Game::setPlayer(Player player) {
 	m_pPlayer = player;
 }
@@ -67,14 +65,9 @@ bool Game::Init(const char * title, int xpos, int ypos, int width, int height, i
 
 	if (fullscreen) flags = SDL_WINDOW_FULLSCREEN;
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
-		//printf("SDL Init.\n");
 		m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-		TTF_Init();
-		//printf("SDL Window created.\n");
 		m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-		//printf("SDL Renderer init.\n");
 		SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
-		//printf("Init completed.\n");
 
 		// LOAD STUFF HERE
 
@@ -93,21 +86,6 @@ bool Game::Init(const char * title, int xpos, int ypos, int width, int height, i
 		terra.Load("water.png", "WATER", m_pRenderer);
 		terra.Load("lava.png", "LAVA", m_pRenderer);
 		terra.Load("wall.png", "WALL", m_pRenderer);
-
-		/*cout << "How many ai wanted? ";
-		cin >> NUM_AI;
-
-		for (int i = 0; i < NUM_AI; ++i) {
-			AiObject *temp;
-			temp = new AiObject();
-			aiList.push_back(temp);
-		}
-
-		for (vector<AiObject*>::size_type i = 0; i != aiList.size(); i++) {
-			aiList[i]->Load("SPRITE_RED.png", "RED", m_pRenderer);
-			aiList[i]->Load("SPRITE_BLUE.png", "BLUE", m_pRenderer);
-			aiList[i]->Load("SPRITE_GREEN.png", "GREEN", m_pRenderer);
-		}*/
 		
 		_ai1.Load("SPRITE_RED.png", "RED", m_pRenderer);
 		_ai1.Load("SPRITE_BLUE.png", "BLUE", m_pRenderer);
@@ -126,8 +104,6 @@ bool Game::Init(const char * title, int xpos, int ypos, int width, int height, i
 			aiList[i]->pos = Vector3((float)(rand() % 800), (float)(rand() % 800), 0);
 
 		player.pos = Vector3(400, 400, 0);
-		
-		//g_game->setPlayer(player);
 
 		// don't delete this line again dickhead
 		m_bRunning = true;
@@ -140,10 +116,6 @@ bool Game::Init(const char * title, int xpos, int ypos, int width, int height, i
 void Game::Update() {
 	m_currentFrame = int(((SDL_GetTicks() / 100) % 6));
 	if (!isPaused) {
-		// DO STUFF HERE
-		/*for (vector<AiObject*>::size_type i = 0; i != aiList.size(); ++i) {
-			TestSomeShit(aiList[i], player.pos);
-		}*/
 		
 		TestSomeShit(_ai1, targetPosition);
 		TestSomeShit(_ai2, targetPosition);
@@ -157,20 +129,8 @@ void Game::Render() {
 
 	// DRAW TO SCREEN HERE
 
-	/*for (vector<Terrain*>::size_type i = 0; i != terrainList.size(); i++) {
-		terra.Draw(terraType, pos, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	}*/
 	terra.Draw("background", 0, 0, 800, 800, 0, m_pRenderer, SDL_FLIP_NONE);
 	player.Draw(playerDir, player.pos, 32, 32, m_currentFrame, 0, m_pRenderer, SDL_FLIP_NONE);
-
-
-	/*terra.Draw("NORMAL", 0, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	terra.Draw("WATER", 20, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	terra.Draw("LAVA", 40, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);
-	terra.Draw("WALL", 60, 0, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);*/
-
-	/*for (vector<AiObject*>::size_type i = 0; i != aiList.size(); i++)
-		aiList[i]->Draw("RED", _ai1.pos, CELL_SIZE, CELL_SIZE, 0, m_pRenderer, SDL_FLIP_NONE);*/
 
 	_ai1.Draw("burd", _ai1.pos, 32, 32, 0, m_pRenderer, SDL_FLIP_NONE);
 	_ai2.Draw("burd", _ai2.pos, 32, 32, 0, m_pRenderer, SDL_FLIP_NONE);
@@ -197,22 +157,18 @@ void Game::handleEvents() {
 	playerDir = DOWN;
 
 	if (keys[SDL_SCANCODE_A]) {
-		//lastKnownPos = player.pos;
 		playerDir = LEFT;
 		player.pos.x -= MOVE_RATE;
 	}
 	if (keys[SDL_SCANCODE_D]) {
-		//lastKnownPos = player.pos;
 		playerDir = RIGHT;
 		player.pos.x += MOVE_RATE;
 	}
 	if (keys[SDL_SCANCODE_W]) {
-		//lastKnownPos = player.pos;
 		playerDir = UP;
 		player.pos.y -= MOVE_RATE;
 	}
 	if (keys[SDL_SCANCODE_S]) {
-		//lastKnownPos = player.pos;
 		playerDir = DOWN;
 		player.pos.y += MOVE_RATE;
 	}
@@ -254,12 +210,6 @@ void Game::setStartDir(char *p_str) {
 void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 	if (pf->m_foundGoal == true) {
 		Vector3 nextPos = pf->NextPathPos(ai_Object);
-		/*system("cls");
-
-		cout << "ai object: " << ai_Object.pos.x << " , " << ai_Object.pos.y << endl;
-		cout << "next pos: " << nextPos.x << " , " << nextPos.y << endl;
-		cout << "target pos: " << targetPos.x << " , " << targetPos.y << endl;
-		cout << "last known pos: " << lastKnownPos.x << " , " << lastKnownPos.y << endl;*/
 
 		if (nextPos.x > ai_Object.pos.x) {
 			ai_Object.pos.x += MOVE_RATE + .5f;
@@ -287,7 +237,6 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 		}
 
 		if (floor(distToTarget.magnitude()) < 32) {
-			//cout << "trigger" << endl;
 		
 			pf->m_initalizedStartGoal = false;
 			pf->m_foundGoal = false;
@@ -300,7 +249,6 @@ void TestSomeShit(AiObject &ai_Object, Vector3 targetPos) {
 	}
 	else {
 		pf->FindPath(ai_Object.pos, targetPos);
-		//cout << "FIND PATH" << endl;
 	}
 }
 

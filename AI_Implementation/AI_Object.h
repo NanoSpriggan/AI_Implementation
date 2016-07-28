@@ -10,7 +10,6 @@
 #include "Agent.h"
 #include "State.h"
 #include "StateMachine.h"
-#include "SeekState.h"
 
 using namespace std;
 

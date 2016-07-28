@@ -30,10 +30,10 @@
     <ClCompile Include="StateMachine.cpp">
       <Filter>AI STUFF</Filter>
     </ClCompile>
-    <ClCompile Include="SeekState.cpp">
+    <ClCompile Include="Agent.cpp">
       <Filter>AI STUFF</Filter>
     </ClCompile>
-    <ClCompile Include="Agent.cpp">
+    <ClCompile Include="State.cpp">
       <Filter>AI STUFF</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,9 +66,6 @@
       <Filter>AI STUFF</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
-      <Filter>AI STUFF</Filter>
-    </ClInclude>
-    <ClInclude Include="SeekState.h">
       <Filter>AI STUFF</Filter>
     </ClInclude>
     <ClInclude Include="Agent.h">
