@@ -31,4 +31,5 @@ public:
 	void Exit(Agent*pAgent) {}
 };
 
+
 #endif // !STATE_H

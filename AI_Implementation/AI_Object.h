@@ -22,7 +22,7 @@ public:
 		m_pStateMachine->ChangeState(this, new Seek());
 	}
 
-	~AiObject() { delete m_pStateMachine; }
+	~AiObject() {/* delete m_pStateMachine;*/ }
 
 	bool Load(string fileName, string id, SDL_Renderer *pRenderer) {
 		SDL_Surface *pTempSurface = IMG_Load(fileName.c_str());

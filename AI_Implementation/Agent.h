@@ -30,6 +30,8 @@ public:
 	inline IBehaviour* GetBehaviour() { return m_currentBehaviour; }
 
 	inline void SetBehaviour(IBehaviour *behaviour) { m_currentBehaviour = behaviour; }
+	inline void SetState(State *state) { m_currentState = state; }
+
 	void Update(float deltaTime, Player *pPlayer);
 	MovementInfo m_movementInfo;
 	Vector3 pos;
@@ -37,6 +39,7 @@ protected:
 	void Init(Vector3 pos);
 	IBehaviour *m_currentBehaviour;
 	StateMachine *m_pStateMachine;
+	State *m_currentState;
 };
 
 

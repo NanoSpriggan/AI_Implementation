@@ -17,3 +17,5 @@ void Seek::Update(float deltaTime, Agent * pAgent, Player pPlayer, StateMachine 
 		Vector3 accel = diff * pAgent->m_movementInfo.m_maxForce;
 		pAgent->m_movementInfo.m_acceleration = accel;
 	}
+
+

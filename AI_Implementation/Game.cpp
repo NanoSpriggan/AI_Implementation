@@ -117,8 +117,12 @@ void Game::Update() {
 	m_currentFrame = int(((SDL_GetTicks() / 100) % 6));
 	if (!isPaused) {
 		
-		TestSomeShit(_ai1, targetPosition);
-		TestSomeShit(_ai2, targetPosition);
+		_ai1.Update(60.0f, &player);
+		_ai2.Update(60.0f, &player);
+
+		
+		/*TestSomeShit(_ai1, targetPosition);
+		TestSomeShit(_ai2, targetPosition);*/
 
 		SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
 	}
